@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=CitySim
+Exec=qmlscene $@ Main.qml
+Icon=city.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+
+Name[cs]=Simulátor města
