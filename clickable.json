@@ -1,0 +1,8 @@
+{
+  "package": "city.zubozrout",
+  "app": "city",
+  "sdk": "ubuntu-sdk-15.04",
+  "arch": "armhf",
+  "template": "cmake",
+  "kill": "qmlscene"
+}

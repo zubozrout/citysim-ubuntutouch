@@ -10,6 +10,7 @@ Rectangle {
     color: "#87ceeb"
     visible: menu ? false : true
 
+    property alias gameBoard: gameBoard
     property var showViability: false
     property var muteSound: mainView.muteSound
 
@@ -171,7 +172,7 @@ Rectangle {
 
                 property var income: 0
 
-                property var zoom: boardFlickable.width * 2
+                property var zoom: boardFlickable.width
 
                 property var empty: null
 
@@ -191,8 +192,8 @@ Rectangle {
 
                 Grid {
                     id: grid
-                    columns: 64
-                    rows: 64
+                    columns: 32
+                    rows: 32
                     spacing: 1
 
                     property var blockWidth: gameBoard.width/columns - spacing + spacing/columns
@@ -228,6 +229,28 @@ Rectangle {
                         }
 
                         gameBoard.boardArray = blocks;
+                    }
+                }
+
+                function toJson() {
+                    var board = [];
+
+                    for (var i = 0; i < gameBoard.boardArray.length; i++) {
+                        board[i] = [];
+
+                        for (var j = 0; j < gameBoard.boardArray[i].length; j++) {
+                            board[i][j] = {
+                                location: gameBoard.boardArray[i][j].holding.location,
+                                id: gameBoard.boardArray[i][j].uniqueID,
+                                //TODO more here, each land should probably export their own json
+                            };
+                        }
+                    }
+
+                    return {
+                        board: board,
+                        money: money,
+                        date: date.getTime()
                     }
                 }
             }

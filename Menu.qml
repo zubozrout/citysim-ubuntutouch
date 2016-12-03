@@ -2,6 +2,7 @@ import QtQuick 2.3
 import Ubuntu.Components 1.1
 import QtMultimedia 5.0
 import Ubuntu.Components.Popups 0.1
+import CitySim 1.0
 
 Rectangle {
     anchors.fill: parent
@@ -80,6 +81,25 @@ Rectangle {
         }
     }
 
+    Button {
+        id: load
+        visible: CitySim.canLoad
+        text: "Load Game"
+        gradient: UbuntuColors.orangeGradient
+        anchors {
+            margins: units.gu(2)
+            top: menuStart.bottom
+            horizontalCenter: parent.horizontalCenter
+        }
+
+        onClicked: {
+            var save = CitySim.load();
+            //TODO load the game
+
+            menu = false;
+        }
+    }
+
     Text {
         id: menuText
         text: "Please note this game is only a preview."
@@ -87,7 +107,7 @@ Rectangle {
         color: UbuntuColors.darkAubergine
         anchors {
             margins: units.gu(2)
-            top: menuStart.bottom
+            top: load.visible ? load.bottom : menuStart.bottom
             horizontalCenter: parent.horizontalCenter
         }
     }
@@ -104,10 +124,12 @@ Rectangle {
         }
 
         onClicked: {
+            CitySim.save(mainView.gameHolder.gameBoard.toJson());
+
             // Save
             PopupUtils.open(Qt.resolvedUrl("Dialogue.qml"), parent, {
-                title: "Error",
-                text: "This functionality is not yet supported"
+                title: "Saved",
+                text: "You game has been saved!"
             })
         }
     }
