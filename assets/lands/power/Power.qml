@@ -27,7 +27,7 @@ Item {
 
     property var imageRotation: -45
 
-    property var usableInfo: "This power plant can suply up to " + electricity + " zones with electricity"
+    property var usableInfo: "This power plant can supply up to " + electricity + " zones with electricity"
 
     onPlacedChanged: {
         if(!container.muteSound) {

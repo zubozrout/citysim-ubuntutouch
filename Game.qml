@@ -231,6 +231,28 @@ Rectangle {
                         gameBoard.boardArray = blocks;
                     }
                 }
+
+                function toJson() {
+                    var board = [];
+
+                    for (var i = 0; i < gameBoard.boardArray.length; i++) {
+                        board[i] = [];
+
+                        for (var j = 0; j < gameBoard.boardArray[i].length; j++) {
+                            board[i][j] = {
+                                location: gameBoard.boardArray[i][j].holding.location,
+                                id: gameBoard.boardArray[i][j].uniqueID,
+                                //TODO more here, each land should probably export their own json
+                            };
+                        }
+                    }
+
+                    return {
+                        board: board,
+                        money: money,
+                        date: date.getTime()
+                    }
+                }
             }
         }
     }
