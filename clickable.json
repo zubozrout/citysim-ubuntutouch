@@ -2,6 +2,6 @@
   "package": "city.zubozrout",
   "app": "city",
   "sdk": "ubuntu-sdk-15.04",
-  "arch": "all",
-  "template": "pure"
+  "arch": "armhf",
+  "template": "cmake"
 }
