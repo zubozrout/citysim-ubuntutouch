@@ -56,7 +56,7 @@ Rectangle {
 
                 color: gameBoard.industrialColor
                 width: parent.width/3 - parent.spacing
-                height: value
+                height: value < 5 ? 5 : value //Don't let the parent box look empty
             }
 
             Rectangle {
@@ -65,7 +65,7 @@ Rectangle {
 
                 color: gameBoard.commercialColor
                 width: parent.width/3
-                height: value
+                height: value < 5 ? 5 : value
             }
 
             Rectangle {
@@ -74,7 +74,7 @@ Rectangle {
 
                 color: gameBoard.residentialColor
                 width: parent.width/3 - parent.spacing
-                height: value
+                height: value < 5 ? 5 : value
             }
         }
     }
@@ -268,7 +268,7 @@ Rectangle {
     Icon {
         id: menuButton
         width: height
-        height: parent.height/2
+        height: parent.height * 0.75
         name: "settings"
         color: "#fff"
 
