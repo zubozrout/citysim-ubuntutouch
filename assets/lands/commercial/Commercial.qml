@@ -85,4 +85,18 @@ Item {
             gameBoard.populatedCommercialCount += 1;
         }
     }
+
+    function toJson() {
+        return {
+            currentBuilding: currentBuilding,
+            populated: populated,
+            location: location,
+        };
+    }
+
+    function fromJson(json) {
+        currentBuilding = json.currentBuilding;
+        populated = json.populated;
+        location = json.location;
+    }
 }

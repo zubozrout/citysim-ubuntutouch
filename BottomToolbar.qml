@@ -1,4 +1,5 @@
 import QtQuick 2.3
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.1
 import QtMultimedia 5.0
 
@@ -223,45 +224,47 @@ Rectangle {
         }
     }
 
-    Text {
-        id: dateTag
-        text: ("0" + gameBoard.date.getDate()).slice(-2) + "/" + ("0" + gameBoard.date.getMonth()).slice(-2) + "/" + gameBoard.date.getFullYear()
-        color: "#fff"
+    ColumnLayout {
+        spacing: 1
         anchors {
-            margins: 10
-            left: dateButtons.right
-            verticalCenter: parent.verticalCenter
-        }
-    }
-
-    Text {
-        id: populationTag
-        text: "Population: " + gameBoard.population
-        color: "#46d"
-        anchors {
-            margins: 10
-            right: moneyTag.left
-            verticalCenter: parent.verticalCenter
-        }
-        font.bold: true
-    }
-
-    Text {
-        id: moneyTag
-        text: gameBoard.money + "$"
-        color: gameBoard.money < 0 ? "#d00" : "#333"
-        anchors {
-            margins: 10
+            top: parent.top
+            bottom: parent.bottom
             right: menuButton.left
-            verticalCenter: parent.verticalCenter
+            rightMargin: 10
         }
-        font.bold: true
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                gameBoard.money += 1000;
+        Text {
+            id: dateTag
+            text: ("0" + gameBoard.date.getDate()).slice(-2) + "/" + ("0" + gameBoard.date.getMonth()).slice(-2) + "/" + gameBoard.date.getFullYear()
+            color: "#fff"
+            font.pointSize: units.gu(1)
+
+            Layout.fillWidth: true
+        }
+
+        Text {
+            id: populationTag
+            text: "Pop: " + gameBoard.population
+            color: "#46d"
+            font.pointSize: units.gu(1)
+
+            Layout.fillWidth: true
+        }
+
+        Text {
+            id: moneyTag
+            text: "$" + gameBoard.money
+            color: gameBoard.money < 0 ? "#d00" : "#333"
+            font.pointSize: units.gu(1)
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    gameBoard.money += 1000;
+                }
             }
+
+            Layout.fillWidth: true
         }
     }
 

@@ -65,5 +65,14 @@ Item {
             }
         }
     }
-}
 
+    function toJson() {
+        return {
+            location: location,
+        };
+    }
+
+    function fromJson(json) {
+        location = json.location;
+    }
+}

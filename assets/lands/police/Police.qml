@@ -33,4 +33,14 @@ Item {
         id: player
         source: sound
     }
+
+    function toJson() {
+        return {
+            location: location,
+        };
+    }
+
+    function fromJson(json) {
+        location = json.location;
+    }
 }

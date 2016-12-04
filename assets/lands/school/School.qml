@@ -34,5 +34,14 @@ Item {
         id: player
         source: school.sound
     }
-}
 
+    function toJson() {
+        return {
+            location: location,
+        };
+    }
+
+    function fromJson(json) {
+        location = json.location;
+    }
+}
