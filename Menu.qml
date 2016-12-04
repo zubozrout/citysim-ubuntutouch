@@ -45,7 +45,6 @@ Rectangle {
 
             Text {
                 text: mainView.muteSound ? "Sound muted" : "Sound active"
-                font.pointSize: units.gu(2)
             }
         }
     }
@@ -53,7 +52,7 @@ Rectangle {
     Text {
         id: menuHeader
         text: "Welcome to City Sim"
-        font.pointSize: units.gu(4)
+        font.pointSize: units.gu(3)
         font.bold: true
         color: UbuntuColors.orange
         anchors {
@@ -99,7 +98,6 @@ Rectangle {
     Text {
         id: menuText
         text: "Please note this game is only a preview."
-        font.pointSize: units.gu(2)
         color: UbuntuColors.darkAubergine
         anchors {
             margins: units.gu(2)
