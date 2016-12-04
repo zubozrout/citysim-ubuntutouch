@@ -88,9 +88,7 @@ Rectangle {
         }
 
         onClicked: {
-            var save = CitySim.load();
-            //TODO load the game
-
+            loadSavedGame = true;
             menu = false;
         }
     }

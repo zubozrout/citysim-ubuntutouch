@@ -38,4 +38,16 @@ Item {
             destroyable = false;
         }
     }
+
+    function toJson() {
+        return {
+            boardImage: boardImage,
+            location: location,
+        };
+    }
+
+    function fromJson(json) {
+        boardImage = json.boardImage;
+        location = json.location;
+    }
 }

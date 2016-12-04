@@ -206,6 +206,13 @@ Rectangle {
                     property var baseColor: "transparent"
 
                     Component.onCompleted: {
+                        var save = {};
+                        if (loadSavedGame) {
+                            save = CitySim.load();
+                            gameBoard.money = save.money;
+                            gameBoard.date = new Date(save.date);
+                        }
+
                         var blocks = new Array();
                         var components = new Array();
 
@@ -224,8 +231,20 @@ Rectangle {
                                         blocks[i].push(block.createObject(grid));
                                         blocks[i][j].xPos = i;
                                         blocks[i][j].yPos = j;
-                                        components[i].push(fill.createObject(blocks[i][j]));
-                                        blocks[i][j].holding = components[i][j];
+
+                                        if (loadSavedGame) {
+                                            var blockFill = Qt.createComponent(encodeURIComponent(save.board[i][j].location));
+                                            var component = blockFill.createObject(blocks[i][j]);
+                                            component.fromJson(save.board[i][j]);
+
+                                            components[i].push(component);
+                                            blocks[i][j].holding = components[i][j];
+                                        }
+                                        else {
+                                            components[i].push(fill.createObject(blocks[i][j]));
+                                            blocks[i][j].holding = components[i][j];
+                                        }
+
                                         blocks[i][j].uniqueID = id;
                                     }
                                     id++;
@@ -244,11 +263,10 @@ Rectangle {
                         board[i] = [];
 
                         for (var j = 0; j < gameBoard.boardArray[i].length; j++) {
-                            board[i][j] = {
-                                location: gameBoard.boardArray[i][j].holding.location,
-                                id: gameBoard.boardArray[i][j].uniqueID,
-                                //TODO more here, each land should probably export their own json
-                            };
+                            var block = gameBoard.boardArray[i][j].holding.toJson();
+                            block.id = gameBoard.boardArray[i][j].uniqueID;
+
+                            board[i][j] = block;
                         }
                     }
 

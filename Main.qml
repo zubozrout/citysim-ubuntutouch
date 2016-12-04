@@ -32,6 +32,7 @@ MainView {
     property var menu: true
     property var gameHolder: null
     property var muteSound: false
+    property var loadSavedGame: false
 
     onMuteSoundChanged: CitySim.muted = muteSound
 
@@ -54,4 +55,3 @@ MainView {
 
     Menu { visible: menu ? true : false }
 }
-

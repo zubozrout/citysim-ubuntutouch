@@ -100,4 +100,14 @@ Item {
         source: sound
         volume: 0.5
     }
+
+    function toJson() {
+        return {
+            location: location,
+        };
+    }
+
+    function fromJson(json) {
+        location = json.location;
+    }
 }
