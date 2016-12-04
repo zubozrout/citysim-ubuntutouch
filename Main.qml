@@ -1,6 +1,7 @@
 import QtQuick 2.3
 import Ubuntu.Components 1.1
 import QtMultimedia 5.0
+import CitySim 1.0
 
 import "logic.js" as Logic
 
@@ -31,6 +32,12 @@ MainView {
     property var menu: true
     property var gameHolder: null
     property var muteSound: false
+
+    onMuteSoundChanged: CitySim.muted = muteSound
+
+    Component.onCompleted: {
+        muteSound = CitySim.muted;
+    }
 
     Item {
         visible: menu ? false : true

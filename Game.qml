@@ -1,6 +1,7 @@
 import QtQuick 2.3
 import Ubuntu.Components 1.1
 import QtMultimedia 5.0
+import CitySim 1.0
 
 import "logic.js" as Logic
 
@@ -13,6 +14,8 @@ Rectangle {
     property alias gameBoard: gameBoard
     property var showViability: false
     property var muteSound: mainView.muteSound
+
+    onShowViabilityChanged: CitySim.showViability = showViability
 
     Timer {
         id: eventTimer
@@ -45,6 +48,8 @@ Rectangle {
     }
 
     Component.onCompleted: {
+        showViability = CitySim.showViability;
+
         if(!muteSound) {
             musicPlayer.play();
         }
