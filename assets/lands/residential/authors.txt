@@ -1,0 +1,1 @@
+icon.svg: Font Awesome by Dave Gandy

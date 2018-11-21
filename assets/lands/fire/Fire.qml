@@ -1,46 +1,35 @@
-import QtQuick 2.3
+import QtQuick 2.4
 import QtMultimedia 5.0
 
 Item {
-    id: firestation
-
-    property var name: ""
-    property var location: ""
-    property var price: 0
-
-    property var zone: false
-    property var mapColor: "#d00"
-    property var sound: "assets/lands/fire/fire.wav"
-    property var boardImage: "assets/lands/fire/fire.png"
-
-    property var size: 1
-
-    property var placed: 0
-
-    property var destroyable: true
-    property var income: -1 * gameBoard.fireMoney
-
-    property var imageRotation: -45
-
-    onPlacedChanged: {
-        if(!container.muteSound) {
+    id: fire
+    
+    property var objData: {
+		"name": "Fire station",
+		"location": null,
+		"price": 100,
+		"income": -20,
+		"mapColor": "#d00",
+		"sound": "../assets/lands/fire/fire.wav",
+		"boardImage": "../assets/lands/fire/fire.png",
+		"destroyable": true,
+		"level": -1,
+		"size": 1,
+		"imageRotation": -45,
+		"volume": 0.5
+	}    
+    
+    function update(gameHolder, field) {		
+		if(!gameHolder.settings.muteSound) {
             player.stop();
+            
+            player.source = objData.sound;
+            player.volume = objData.volume;
             player.play();
         }
-    }
-
-    Audio {
+	}
+	
+	Audio {
         id: player
-        source: sound
-    }
-
-    function toJson() {
-        return {
-            location: location,
-        };
-    }
-
-    function fromJson(json) {
-        location = json.location;
     }
 }

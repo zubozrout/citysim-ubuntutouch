@@ -1,47 +1,35 @@
-import QtQuick 2.3
+import QtQuick 2.4
 import QtMultimedia 5.0
 
 Item {
     id: school
-
-    property var name: ""
-    property var location: ""
-    property var price: 0
-
-    property var zone: false
-    property var mapColor: "#da4"
-    property var sound: "assets/lands/school/school.wav"
-    property var boardImage: "assets/lands/school/school.png"
-
-    property var size: 1
-
-    property var placed: 0
-
-    property var destroyable: true
-
-    property var income: -1 * gameBoard.schoolMoney
-
-    property var imageRotation: -45
-
-    onPlacedChanged: {
-        if(!container.muteSound) {
+    
+    property var objData: {
+		"name": "School",
+		"location": null,
+		"price": 100,
+		"income": -20,
+		"mapColor": "#dd0",
+		"sound": "../assets/lands/school/school.wav",
+		"boardImage": "../assets/lands/school/school.png",
+		"destroyable": true,
+		"level": -1,
+		"size": 1,
+		"imageRotation": -45,
+		"volume": 0.5
+	}    
+    
+    function update(gameHolder, field) {		
+		if(!gameHolder.settings.muteSound) {
             player.stop();
+            
+            player.source = objData.sound;
+            player.volume = objData.volume;
             player.play();
         }
-    }
-
-    Audio {
+	}
+	
+	Audio {
         id: player
-        source: school.sound
-    }
-
-    function toJson() {
-        return {
-            location: location,
-        };
-    }
-
-    function fromJson(json) {
-        location = json.location;
     }
 }

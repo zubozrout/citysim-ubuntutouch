@@ -1,15 +1,17 @@
-import QtQuick 2.3
-import Ubuntu.Components 1.1
+import QtQuick 2.4
+import Ubuntu.Components 1.3
 import QtMultimedia 5.0
-import Ubuntu.Components.Popups 0.1
+import Ubuntu.Components.Popups 1.3
 import CitySim 1.0
+
+import "../scripts/logic.js" as Logic
 
 Rectangle {
     anchors.fill: parent
     color: "transparent"
 
     Image {
-        source: "assets/images/menu.jpg"
+        source: "../assets/images/menu.jpg"
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
     }
@@ -32,13 +34,23 @@ Rectangle {
             verticalItemAlignment: Grid.AlignVCenter
 
             Image {
-                source: "assets/icons/mute.png"
-                opacity: mainView.muteSound ? 1 : 0.4
+                source: "../assets/icons/mute.png"
+                opacity: 1
 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        mainView.muteSound = !mainView.muteSound
+						if(Logic.gameHolder) {
+							var stateMuted = Logic.gameHolder.settings.muteSound;
+							Logic.gameHolder.settings.muteSound = !stateMuted;
+							
+							if(stateMuted) {
+								parent.opacity = 1;
+							}
+							else {
+								parent.opacity = 0.5;
+							}
+						}
                     }
                 }
             }
@@ -57,14 +69,14 @@ Rectangle {
         color: UbuntuColors.orange
         anchors {
             margins: units.gu(2)
-            bottom: menuStart.top
+            bottom: menuNewGame.top
             horizontalCenter: parent.horizontalCenter
         }
     }
 
     Button {
-        id: menuStart
-        text: gameHolder == null ? "Start Game" : "Continue the game"
+        id: menuNewGame
+        text: "New Game"
         gradient: UbuntuColors.orangeGradient
         anchors {
             margins: units.gu(2)
@@ -72,24 +84,38 @@ Rectangle {
         }
 
         onClicked: {
-            menu = false;
+			gameItem.createGame(function(gameHolder) {
+				if(gameHolder.gameBoard) {
+					gameHolder.reset();
+					gameHolder.gameBoard.startGame();
+					mainView.menu = false;
+				}
+			});
         }
     }
 
     Button {
         id: load
-        visible: CitySim.canLoad && gameHolder == null
+        visible: true
         text: "Load Game"
         gradient: UbuntuColors.orangeGradient
         anchors {
             margins: units.gu(2)
-            top: menuStart.bottom
+            top: menuNewGame.bottom
             horizontalCenter: parent.horizontalCenter
         }
 
         onClicked: {
-            loadSavedGame = true;
-            menu = false;
+			var savedGame = CitySim.load();
+			if(savedGame) {
+				gameItem.createGame(function(gameHolder) {
+					if(gameHolder.gameBoard) {
+						gameHolder.fromJson(savedGame);
+						gameHolder.gameBoard.startGame();
+						mainView.menu = false;
+					}
+				});
+			}
         }
     }
 
@@ -99,7 +125,7 @@ Rectangle {
         color: UbuntuColors.darkAubergine
         anchors {
             margins: units.gu(2)
-            top: load.visible ? load.bottom : menuStart.bottom
+            top: load.visible ? load.bottom : menuNewGame.bottom
             horizontalCenter: parent.horizontalCenter
         }
     }
@@ -107,7 +133,7 @@ Rectangle {
     Button {
         id: menuSave
         text: "Save the game"
-        visible: mainView.gameHolder == null ? false : true
+        visible: true
         gradient: UbuntuColors.greyGradient
         anchors {
             margins: units.gu(2)
@@ -116,7 +142,7 @@ Rectangle {
         }
 
         onClicked: {
-            CitySim.save(mainView.gameHolder.gameBoard.toJson());
+            CitySim.save(Logic.gameHolder.toJson());
 
             // Save
             PopupUtils.open(Qt.resolvedUrl("Dialogue.qml"), parent, {
@@ -128,8 +154,8 @@ Rectangle {
 
     Button {
         id: menuShowViability
-        text: mainView.gameHolder == null || mainView.gameHolder.showViability ? "Hide zone viability info" : "Show zone viability info"
-        visible: mainView.gameHolder == null ? false : true
+        text: Logic.gameHolder === null || mainView.gameHolder.showViability ? "Hide zone viability info" : "Show zone viability info"
+        visible: Logic.gameHolder === null ? false : true
         gradient: UbuntuColors.greyGradient
         anchors {
             margins: units.gu(2)
@@ -138,7 +164,7 @@ Rectangle {
         }
 
         onClicked: {
-            mainView.gameHolder.showViability = !mainView.gameHolder.showViability;
+            Logic.gameHolder.props.showViability = !Logic.gameHolder.props.showViability;
         }
     }
 }

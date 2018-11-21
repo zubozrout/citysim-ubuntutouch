@@ -36,5 +36,7 @@ install(FILES "city.apparmor" DESTINATION ${DATA_DIR})
 file(GLOB GAME_FILES *.qml *.png *.svg *.js)
 install(FILES ${GAME_FILES} DESTINATION ${DATA_DIR})
 install(DIRECTORY assets DESTINATION ${DATA_DIR})
+install(DIRECTORY components DESTINATION ${DATA_DIR})
+install(DIRECTORY scripts DESTINATION ${DATA_DIR})
 
 add_subdirectory(plugins)

@@ -6,12 +6,11 @@
 #include <QFile>
 #include <QDir>
 #include <QVariant>
+#include <QMetaObject>
 
 #include "citysim.h"
 
-CitySim::CitySim() :
-    m_settings()
-{
+CitySim::CitySim() : m_settings() {
     m_dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     m_saveFile = m_dataDir + "/save.json";
     m_settingsFile = m_dataDir + "/settings.json";

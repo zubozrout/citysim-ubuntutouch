@@ -1,105 +1,68 @@
-import QtQuick 2.3
+import QtQuick 2.4
 import QtMultimedia 5.0
 
 Item {
-    id: residentialZone
-
-    property var baseDir: "assets/lands/residential/"
-
-    property var name: ""
-    property var location: ""
-    property var price: 0
-
-    property var zone: "r"
-    property var mapColor: gameBoard.residentialColor
-    property var sound: baseDir + "zone.wav"
-    property var boardImage: !populated ? baseDir + "residential.png" : baseDir + buildings[currentBuilding].name
-
-    property var placed: 0
-    property var size: 1
-
-    property var destroyable: true
-
-    property var buildings: [ {"name" : "building_a.png", "pop" : 80}, {"name" : "building_b.png", "pop" : 240}, {"name" : "building_c.png", "pop" : 110}, {"name" : "building_d.png", "pop" : 200} ]
-    property var currentBuilding: -1
-    property var population: currentBuilding == -1 ? 0 : Number(buildings[currentBuilding].pop)
-    property var populated: false
-
-    property var income: gameBoard.residentialTax
-
-    property var imageRotation: populated ? -45 : 0
-
-    onPlacedChanged: {
-        if(!container.muteSound) {
+    id: commercialZone
+    
+    property var baseDir: "../assets/lands/residential/"
+    property var objData: {
+		"name": "Residential zone",
+		"location": null,
+		"price": 100,
+		"income": 5,
+		"zone": "c",
+		"mapColor": "#04a",
+		"sound": baseDir + "zone.wav",
+		"boardImage": "",
+		"destroyable": true,
+		"level": 0,
+		"daysToSurvive": Math.random() * (200 - 10) + 10,
+		"populated": false,
+		"size": 1,
+		"imageRotation": 0,
+		"viabilitySource": false,
+		"volume": 0.5,
+		"supportsTimeStepUpdate": true
+	}
+    
+    function getBuildings(level) {
+		var levelOne = [
+			{"name" : "building_a.png", "daysToSurvive": 365}
+		];
+		var levelTwo = [
+			{"name" : "building_b.png", "daysToSurvive": 365 * 5}
+		];
+		var levelThree = [
+			{"name" : "building_c.png", "daysToSurvive": 365 * 40},
+			{"name" : "building_d.png", "daysToSurvive": 365 * 60}
+		];
+		switch(level) {
+			case 1:
+				return levelOne;
+			case 2:
+				return levelTwo;
+			case 3:
+				return levelThree;
+		}
+		return null;
+	}
+    
+    function update(gameHolder, field) {
+		if(objData.level === 0) {
+			objData.boardImage = baseDir + "residential.png";
+			objData.imageRotation = 0;
+		}
+		
+		if(!gameHolder.settings.muteSound) {
             player.stop();
+            
+            player.source = objData.sound;
+            player.volume = objData.volume;
             player.play();
         }
-    }
-
-    Audio {
+	}
+	
+	Audio {
         id: player
-        source: sound
-    }
-
-    Timer {
-        id: residentialTimer
-        interval: 15*dailyTimer.interval
-        running: dailyTimer.running
-        repeat: true
-        onTriggered: {
-            if(block.viable && gameBoard.remainingElectricity > 0 && gameBoard.remainingWater > 0) {
-                var index = Math.floor(Math.random() * buildings.length);
-                if(parent.currentBuilding != index) {
-                    gameBoard.population -= parent.population;
-                    parent.currentBuilding = index;
-                    gameBoard.population += parent.population;
-                    if(!parent.populated) {
-                        parent.populated = true;
-                    }
-                }
-                interval = (Math.floor(Math.random() * (60 - 15 + 1)) + 15)*dailyTimer.interval;
-            }
-            else {
-                if(parent.populated) {
-                    parent.populated = false;
-                }
-            }
-        }
-    }
-
-    Component.onCompleted: {
-        gameBoard.residentialCount++;
-    }
-
-    Component.onDestruction: {
-        gameBoard.residentialCount--;
-        if(populated) {
-            gameBoard.populatedResidentialCount -= 1;
-        }
-    }
-
-    onPopulatedChanged: {
-        if(populated == false) {
-            gameBoard.population -= parent.population;
-            currentBuilding = -1;
-            gameBoard.populatedResidentialCount -= 1;
-        }
-        else {
-            gameBoard.populatedResidentialCount += 1;
-        }
-    }
-
-    function toJson() {
-        return {
-            currentBuilding: currentBuilding,
-            populated: populated,
-            location: location,
-        };
-    }
-
-    function fromJson(json) {
-        currentBuilding = json.currentBuilding;
-        populated = json.populated;
-        location = json.location;
     }
 }

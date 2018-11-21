@@ -1,9 +1,9 @@
-import QtQuick 2.3
-import Ubuntu.Components 1.1
-import QtMultimedia 5.0
+import QtQuick 2.4
+import Ubuntu.Components 1.3
 import CitySim 1.0
 
-import "logic.js" as Logic
+import "scripts/logic.js" as Logic
+import "components"
 
 /*!
     \brief MainView with a Label and Button elements.
@@ -23,14 +23,10 @@ MainView {
     */
     automaticOrientation: true
 
-    // Removes the old toolbar and enables new features of the new header.
-    useDeprecatedToolbar: false
-
     width: units.gu(100)
     height: units.gu(75)
 
     property var menu: true
-    property var gameHolder: null
     property var muteSound: false
     property var loadSavedGame: false
 
@@ -38,20 +34,17 @@ MainView {
 
     Component.onCompleted: {
         muteSound = CitySim.muted;
+        if(Logic.gameHolder === null) {
+			Logic.gameHolder = new Logic.Game();
+		}
     }
 
-    Item {
+    Menu {
+		visible: menu ? true : false
+	}
+	
+	GameItem {
+		id: gameItem
         visible: menu ? false : true
-
-        onVisibleChanged: {
-            if(visible && mainView.gameHolder == null) {
-                var game = Qt.createComponent("Game.qml");
-                if(game.status == Component.Ready) {
-                    mainView.gameHolder = game.createObject(parent);
-                }
-            }
-        }
     }
-
-    Menu { visible: menu ? true : false }
 }
