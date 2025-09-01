@@ -5,8 +5,6 @@ cd "${0%/*}"
 # Delete build data
 clickable clean
 # Build the project
-clickable build
-# Package a .click
-clickable click-build
-# Review the final package
-clickable review
+clickable build -a armhf
+clickable build -a arm64
+clickable build -a amd64
